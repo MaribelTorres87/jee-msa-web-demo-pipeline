@@ -106,7 +106,7 @@ stages:
   # ==========================================
   # STAGE 3: APROBACIÓN MANUAL SEGURIDAD (APPROVAL)
   # ==========================================
-  - stage: Approval Security
+  - stage: ApprovalSecurity
     displayName: 'Aprobar Seguridad'
     dependsOn: CI
     condition: succeeded()
