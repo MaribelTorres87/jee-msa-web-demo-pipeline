@@ -104,7 +104,25 @@ stages:
               onTimeout: 'reject'
 
   # ==========================================
-  # STAGE 3: DESPLIEGUE CONTINUO (CD)
+  # STAGE 3: APROBACIÓN MANUAL SEGURIDAD (APPROVAL)
+  # ==========================================
+  - stage: Approval
+    displayName: 'Aprobar Seguridad'
+    dependsOn: CI
+    condition: succeeded()
+    jobs:
+      - job: manual_gate
+        displayName: 'Esperando aprobación'
+        pool: server
+        steps:
+          - task: ManualValidation@0
+            inputs:
+              notifyUsers: 'jefersonvillacis@hotmail.com'
+              instructions: 'Aprobación requerida para ejecutar la fase de despliegue continuo en OpenShift Sandbox.'
+              onTimeout: 'reject'
+
+  # ==========================================
+  # STAGE 4: DESPLIEGUE CONTINUO (CD)
   # ==========================================
   - stage: CD
     displayName: 'CD'
@@ -146,7 +164,7 @@ stages:
             displayName: 'Descarga CLI, Login y Despliegue Docker'
 
   # ==========================================
-  # STAGE 4: NOTIFICACIONES (NOTIFICATIONS)
+  # STAGE 5: NOTIFICACIONES (NOTIFICATIONS)
   # ==========================================
   - stage: Notifications
     displayName: 'Notificar'
